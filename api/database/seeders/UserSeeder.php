@@ -14,8 +14,8 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         User::factory(20)->create()->each(function ($user) {
-            $user->latitude = rand(-90, 90);
-            $user->longitude = rand(-180, 180);
+            $user->latitude = fake()->latitude();
+            $user->longitude = fake()->longitude();
             $user->save();
         });
     }

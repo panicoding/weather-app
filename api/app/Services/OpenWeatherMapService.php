@@ -33,6 +33,7 @@ class OpenWeatherMapService implements WeatherServiceContract
                 'lat' => $latitude,
                 'lon' => $longitude,
                 'appid' => $this->apiKey,
+                'units' => 'metric',
             ]);
 
             if ($response->failed()) {
