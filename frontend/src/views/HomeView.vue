@@ -29,7 +29,7 @@
                   <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ person.latitude }}</td>
                   <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ person.longitude }}</td>
                   <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-3">
-                    <a href="#" class="text-indigo-600 hover:text-indigo-900"
+                    <a @click="viewWeatherData" href="#" class="text-indigo-600 hover:text-indigo-900"
                       >View<span class="sr-only">, {{ person.name }}</span></a
                     >
                   </td>
@@ -40,10 +40,26 @@
         </div>
       </div>
     </div>
+
+    <Modal :show="viewingWeatherData" @close="closeModal">
+      Test
+    </Modal>
   </div>
 </template>
 
 <script setup lang="ts">
+import { nextTick, ref } from 'vue';
+import Modal from '@/components/Modal.vue'
+
+const viewingWeatherData = ref(false)
+
+const viewWeatherData = () => {
+  viewingWeatherData.value = true;
+}
+
+const closeModal = () => {
+  viewingWeatherData.value = false;
+}
 const people = [
   { name: 'John Doe', email: 'johndoe@website.com', latitude: '123', longitude: '321' },
 ]
