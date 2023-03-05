@@ -7,7 +7,7 @@
           <p class="mt-2 text-sm text-gray-700">A list of all the users weather data.</p>
         </div>
       </div>
-      <div class="mt-8 flow-root">
+      <div v-if="! usersStore.isLoading" class="mt-8 flow-root">
         <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
             <table class="min-w-full divide-y divide-gray-300">
@@ -23,7 +23,7 @@
                 </tr>
               </thead>
               <tbody class="bg-white">
-                <tr v-for="(user, userIdx) in users" :key="user.id" :class="userIdx % 2 === 0 ? undefined : 'bg-gray-50'">
+                <tr v-for="(user, userIdx) in users.data" :key="user.id" :class="userIdx % 2 === 0 ? undefined : 'bg-gray-50'">
                   <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">{{ user.name }}</td>
                   <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ user.email }}</td>
                   <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ user.latitude }}</td>
@@ -36,6 +36,10 @@
                 </tr>
               </tbody>
             </table>
+            <TailwindPagination
+              :data="users"
+              @pagination-change-page="getResults"
+            />
           </div>
         </div>
       </div>
@@ -52,6 +56,7 @@ import { nextTick, ref, computed } from 'vue';
 import Modal from '@/components/Modal.vue'
 import WeatherData from '@/components/WeatherData.vue'
 import { useUsersStore } from '@store/users'
+import { TailwindPagination } from 'laravel-vue-pagination';
 
 const viewingWeatherData = ref(false)
 const user = ref({})
@@ -71,4 +76,8 @@ usersStore.fetchUsers()
 const users = computed(() => {
   return usersStore.users
 });
+
+const getResults = async (page = 1) => {
+  usersStore.fetchUsers(page)
+}
 </script>
