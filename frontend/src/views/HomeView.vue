@@ -23,14 +23,14 @@
                 </tr>
               </thead>
               <tbody class="bg-white">
-                <tr v-for="(person, personIdx) in people" :key="person.email" :class="personIdx % 2 === 0 ? undefined : 'bg-gray-50'">
-                  <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">{{ person.name }}</td>
-                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ person.email }}</td>
-                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ person.latitude }}</td>
-                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ person.longitude }}</td>
+                <tr v-for="(user, userIdx) in users" :key="user.id" :class="userIdx % 2 === 0 ? undefined : 'bg-gray-50'">
+                  <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">{{ user.name }}</td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ user.email }}</td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ user.latitude }}</td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ user.longitude }}</td>
                   <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-3">
-                    <a @click="viewWeatherData" href="#" class="text-indigo-600 hover:text-indigo-900"
-                      >View<span class="sr-only">, {{ person.name }}</span></a
+                    <a @click="viewWeatherData(user)" href="#" class="text-indigo-600 hover:text-indigo-900"
+                      >View<span class="sr-only">, {{ user.name }}</span></a
                     >
                   </td>
                 </tr>
@@ -42,25 +42,33 @@
     </div>
 
     <Modal :show="viewingWeatherData" @close="closeModal">
-      Test
+      <WeatherData :user="user"></WeatherData>
     </Modal>
   </div>
 </template>
 
 <script setup lang="ts">
-import { nextTick, ref } from 'vue';
+import { nextTick, ref, computed } from 'vue';
 import Modal from '@/components/Modal.vue'
+import WeatherData from '@/components/WeatherData.vue'
+import { useUsersStore } from '@store/users'
 
 const viewingWeatherData = ref(false)
+const user = ref({})
 
-const viewWeatherData = () => {
+const viewWeatherData = (u) => {
   viewingWeatherData.value = true;
+  user.value = u
 }
 
 const closeModal = () => {
   viewingWeatherData.value = false;
 }
-const people = [
-  { name: 'John Doe', email: 'johndoe@website.com', latitude: '123', longitude: '321' },
-]
+
+const usersStore = useUsersStore()
+usersStore.fetchUsers()
+
+const users = computed(() => {
+  return usersStore.users
+});
 </script>
