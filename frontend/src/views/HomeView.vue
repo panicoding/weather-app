@@ -45,6 +45,6 @@
 
 <script setup lang="ts">
 const people = [
-  { name: 'Lindsay Walton', email: 'lindsay.walton@example.com', latitude: '123', longitude: '321' },
+  { name: 'John Doe', email: 'johndoe@website.com', latitude: '123', longitude: '321' },
 ]
 </script>
