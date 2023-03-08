@@ -39,7 +39,7 @@ class OpenWeatherMapServiceTest extends TestCase
         ], $weather);
 
         Http::assertSent(function ($request) {
-            return $request->url() === 'https://api.openweathermap.org/data/2.5/weather?lat=38.8951&lon=-77.0364&appid=api_key'
+            return $request->url() === 'https://api.openweathermap.org/data/2.5/weather?lat=38.8951&lon=-77.0364&appid=api_key&units=metric'
                 && $request['lat'] === 38.8951
                 && $request['lon'] === -77.0364
                 && $request['appid'] === 'api_key';
